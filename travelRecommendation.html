@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Explorer — Travel Recommendation</title>
+    <style>
+        /* --- Basic CSS: feel free to customize --- */
+        :root {
+            --accent: #ff6b6b;
+            --dark: #0f1724;
+            --muted: #6b7280;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, Arial, sans-serif;
+            color: #111827;
+            background: #f8fafc;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, #fff, #f6f9ff);
+            box-shadow: 0 1px 4px rgba(16, 24, 40, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 36px;
+            width: 36px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        nav {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            padding: 6px 8px;
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: #eef2ff;
+        }
+
+        .search-area {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-area input[type="text"] {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            min-width: 220px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 0;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn.secondary {
+            background: #111827;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            height: 360px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .hero .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+        }
+
+        .hero .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 28px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin: 0 0 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            margin: 0 0 12px;
+            color: #f3f4f6;
+            opacity: 0.95;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .card .body {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 28px;
+            color: var(--muted);
+            padding: 24px 0;
+        }
+
+        /* About and Contact sections basic styles */
+        section {
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .about-list {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .member {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+            width: 220px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 520px;
+        }
+
+        input,
+        textarea {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .top-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width:720px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .search-area input {
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a class="brand" href="#" data-target="home">
+            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=80&q=60"
+                alt="logo">
+            Explorer
+        </a>
+
+        <nav>
+            <a href="#" data-target="home" class="nav-link">Home</a>
+            <a href="#" data-target="about" class="nav-link">About Us</a>
+            <a href="#" data-target="contact" class="nav-link">Contact Us</a>
+        </nav>
+
+        <!-- search area: only show on home via JS -->
+        <div class="search-area" id="navSearch">
+            <input id="searchInput" type="text" placeholder="Search (beach, temple or country)...">
+            <button id="searchBtn" class="btn">Search</button>
+            <button id="clearBtn" class="btn secondary">Clear</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HOME -->
+        <section id="home" class="active">
+            <div class="hero" id="hero"
+                style="background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1400&q=60'); background-size:cover; background-position:center;">
+                <div class="overlay"></div>
+                <div class="content">
+                    <h1>Discover your next journey</h1>
+                    <p>Explore beaches, temples and countries — curated suggestions for every traveler.</p>
+                    <button id="heroBook" class="btn">Book Now</button>
+                </div>
+            </div>
+
+            <div id="resultsContainer">
+                <h2 id="resultsTitle" style="margin:0 0 12px;">Recommended places</h2>
+                <div id="results" class="grid">
+                    <!-- JS will inject cards here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="">
+            <h2>About Us</h2>
+            <p class="muted">Explorer is a fictional travel recommender built for learning web development — made to
+                showcase HTML, CSS and JavaScript.</p>
+
+            <h3>Our team</h3>
+            <div class="about-list">
+                <div class="member">
+                    <strong>Asha Patel</strong>
+                    <div class="muted">Founder & Product</div>
+                </div>
+                <div class="member">
+                    <strong>Rahul Mehta</strong>
+                    <div class="muted">Lead Developer</div>
+                </div>
+                <div class="member">
+                    <strong>Priya Singh</strong>
+                    <div class="muted">Designer</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="">
+            <h2>Contact Us</h2>
+            <form id="contactForm" onsubmit="return false;">
+                <input type="text" id="contactName" placeholder="Your name" required>
+                <input type="email" id="contactEmail" placeholder="Email" required>
+                <textarea id="contactMessage" placeholder="Write your message..." required></textarea>
+                <button id="contactSubmit" class="btn">Submit</button>
+            </form>
+            <div id="contactStatus" class="muted" style="margin-top:10px;"></div>
+        </section>
+
+        <footer>
+            <div class="muted">© Explorer — Travel Recommendation Demo</div>
+        </footer>
+    </main>
+
+    <script src="travel_recommendation.js"></script>
+</body>
+
+</html>
